@@ -2,34 +2,53 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-6" x-data="{ openCreate: false, editModal: false, editData: {} }">
-    <div class="d-lg-flex justify-content-between align-items-center mb-4">
-        <span class="fs-5 d-block mb-2 mb-lg-0" style="font-weight: 400"></span>
-        <form action="" method="get" class="d-flex gap-2">
-            @foreach (request()->except(['search', 'availability']) as $key => $value)
-                <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-            @endforeach
-            <input type="search" class="form-control bg_transparent_1" name="search" id="search" placeholder="Search"
-                value="{{ request('search') }}" />
-            <select name="unit_id" class="form-select bg_transparent_1" onchange="this.form.submit()">
-                <option value="">Semua Unit</option>
-                @foreach ($units as $unit)
-                    <option value="{{ $unit->id }}" {{ request('unit_id') == $unit->id ? 'selected' : '' }}>
-                        {{ $unit->name }}
-                    </option>
-                @endforeach
-            </select>
-            <select class="form-select bg_transparent_1" name="order" id="order"
-                onchange="$(this).closest('form').submit()">
-                <option value="">Sort</option>
-                <option value="latest" {{ request('order') == 'latest' ? 'selected' : '' }}>Latest</option>
-                <option value="oldest" {{ request('order') == 'oldest' ? 'selected' : '' }}>Oldest</option>
-            </select>
-            <button type="button" class="btn-primary btn btn_theme ajax_modal_btn" title="Add" data-modal-title="Tambah Pegawai"
-                data-modal-size="lg" data-render-route="{{ route('pegawai.create') }}">
-                Tambah Pegawai
-            </button>
-        </form>
+    <div class="container-fluid mb-4">
+        <div class="row align-items-center">
+            <div class="col-lg-4 mb-3 mb-lg-0">
+                <span class="fs-5 fw-normal">Daftar Pegawai</span>
+            </div>
+            <div class="col-lg-8">
+                <form action="" method="get" class="row g-2">
+                    @foreach (request()->except(['search', 'availability']) as $key => $value)
+                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                    @endforeach
+
+                    <div class="col-md-3">
+                        <input type="search" class="form-control" name="search" id="search" placeholder="Search"
+                            value="{{ request('search') }}" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <select name="unit_id" class="form-select" onchange="this.form.submit()">
+                            <option value="">Semua Unit</option>
+                            @foreach ($units as $unit)
+                                <option value="{{ $unit->id }}" {{ request('unit_id') == $unit->id ? 'selected' : '' }}>
+                                    {{ $unit->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <select name="order" class="form-select" onchange="this.form.submit()">
+                            <option value="">Sort</option>
+                            <option value="latest" {{ request('order') == 'latest' ? 'selected' : '' }}>Latest</option>
+                            <option value="oldest" {{ request('order') == 'oldest' ? 'selected' : '' }}>Oldest</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-primary w-100 ajax_modal_btn"
+                            title="Add" data-modal-title="Tambah Pegawai" data-modal-size="lg"
+                            data-render-route="{{ route('pegawai.create') }}">
+                            Tambah Pegawai
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+
 
     @if(session('error'))
         <div class="bg-green-500 text-white p-2 rounded mt-4">{{ session('error') }}</div>
